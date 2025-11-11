@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CGprints - 3D Printing Services</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #0d0d0d; color: #fff; }
+  header { background: linear-gradient(90deg, red, blue, purple); padding: 20px; text-align: center; font-size: 2rem; font-weight: bold; }
+  nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #111; }
+  nav a { color: #fff; text-decoration: none; font-size: 1.1rem; }
+  .hero { text-align: center; padding: 60px 20px; background: linear-gradient(180deg, #1a1a1a, #000); }
+  .hero h1 { font-size: 3rem; }
+  .hero p { font-size: 1.2rem; max-width: 600px; margin: auto; }
+  .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 40px; }
+  .product-card { background: #131313; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 0 10px rgba(255,0,0,0.2); }
+  .product-card img { width: 100%; border-radius: 10px; }
+  .product-card h3 { margin-top: 10px; }
+  .product-card p { margin: 5px 0; font-weight: bold; }
+  .product-card button { margin-top: 10px; padding: 10px 15px; border: none; border-radius: 8px; background: linear-gradient(90deg, red, blue, purple); color: #fff; cursor: pointer; }
+  footer { text-align: center; padding: 20px; background: #111; margin-top: 30px; }
+</style>
+</head>
+<body>
+<header>CGprints</header>
+<nav>
+  <a href="#products">Products</a>
+  <a href="#contact">Contact</a>
+</nav>
+<section class="hero">
+  <h1>High‑Quality 3D Prints</h1>
+  <p>Your one‑stop shop for custom miniatures, props, tools, figurines, and more — printed with precision.</p>
+</section>
+<section id="products" class="products">
+  <div class="product-card" data-price="5">
+    <img src="https://drive.google.com/file/d/165iLKRYn2qgOA9GVk0mmBADNPd9bzxdh/view?usp=sharing" alt="Tank 3 pieces" />
+    <h3>Tank 3 peices</h3>
+    <p>Price: $4</p>
+    <button type="button" onclick="buyItem('Tank 3 peices', 4)">Buy</button>
+  </div>
+  <div class="product-card" data-price="7">
+    <img src="https://drive.google.com/file/d/1Z1bMIBY6Db8NzFwkY4x_5ZU4I7w4Rl_C/view?usp=sharing" alt="Rocktopus" />
+    <h3>Roctopus</h3>
+    <p>Price: $5</p>
+    <button type="button" onclick="buyItem('Roctopus', 5)">Buy</button>
+  </div>
+  <div class="product-card" data-price="10">
+    <img src="https://drive.google.com/file/d/1sL42EhXzT6vQ_DV7IX8rnIFsPD1stvP1/view?usp=sharing" alt="Fidget pack deluxe" />
+    <h3>Fidget pack deluxe</h3>
+    <p>Price: $20</p>
+    <button type="button" onclick="buyItem('Fidget pack deluxe', 20)">Buy</button>
+  </div>
+</section>
+<footer id="contact"></footer>
+
+<!-- Order Form Modal -->
+<div id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center;">
+  <div style="background:#181818; padding:25px; border-radius:12px; width:320px; text-align:center; position:relative;">
+    <h2>Complete Your Order</h2>
+    <p id="itemNameDisplay"></p>
+    <p id="itemPriceDisplay"></p>
+    <input id="emailInput" type="email" placeholder="Your Email" style="width:95%; padding:8px; margin-top:10px; border-radius:8px; border:none;" required>
+    <input id="qtyInput" type="number" min="1" value="1" style="width:95%; padding:8px; margin-top:10px; border-radius:8px; border:none;">
+    
+    <div id="spinner" style="display:none; margin-top:15px;">
+      <div style="border:4px solid #fff; border-top:4px solid #888; border-radius:50%; width:24px; height:24px; animation: spin 1s linear infinite; margin:auto;"></div>
+      <p>Processing...</p>
+    </div>
+    
+    <button type="button" id="submitBtn" onclick="submitOrder()" style="margin-top:15px; padding:10px 15px; border:none; border-radius:8px; background:linear-gradient(90deg, red, blue, purple); color:white; cursor:pointer; width:100%">Submit Order</button>
+    <button type="button" onclick="closeModal()" style="margin-top:10px; padding:8px 12px; border:none; border-radius:8px; background:#444; color:white; cursor:pointer; width:100%">Cancel</button>
+  </div>
+</div>
+
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<script>
+let currentItem = "";
+let currentPrice = 0;
+
+// ✅ OPEN MODAL
+function buyItem(itemName, price) {
+  currentItem = itemName;
+  currentPrice = price;
+
+  document.getElementById('itemNameDisplay').textContent = "Item: " + itemName;
+  document.getElementById('itemPriceDisplay').textContent = `Price per item: $${price} | Total: $${price}`;
+  document.getElementById('qtyInput').value = 1;
+
+  document.getElementById('orderModal').style.display = 'flex';
+}
+
+// ✅ CLOSE MODAL
+function closeModal() {
+  document.getElementById('orderModal').style.display = 'none';
+  document.getElementById('emailInput').value = '';
+  document.getElementById('qtyInput').value = 1;
+  document.getElementById('spinner').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+}
+
+// ✅ LIVE PRICE CALCULATION
+document.getElementById('qtyInput').addEventListener('input', function () {
+  let qty = parseInt(this.value);
+  if (qty < 1 || isNaN(qty)) qty = 1;
+
+  const total = qty * currentPrice;
+  document.getElementById('itemPriceDisplay').textContent =
+    `Price per item: $${currentPrice} | Total: $${total}`;
+});
+
+// ✅ JSONBIN CONFIG
+const BIN_ID = "691357bbae596e708f52c356";
+const API_KEY = "$2a$10$UGn2PaD5YfJ1z7c4xo4f4e0WHugS2BMfS4yrYRsDqukqty/V38OBO";
+
+const url = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+// ✅ SUBMIT ORDER (FULLY FIXED)
+function submitOrder() {
+  const email = document.getElementById('emailInput').value;
+  const qty = parseInt(document.getElementById('qtyInput').value);
+
+  if (!email) { alert("Please enter your email."); return; }
+
+  const order = {
+    item: currentItem,
+    email: email,
+    quantity: qty,
+    totalCost: qty * currentPrice,
+    timestamp: new Date().toLocaleString()
+  };
+
+  // ✅ SHOW SPINNER
+  document.getElementById("spinner").style.display = "block";
+  document.getElementById("submitBtn").disabled = true;
+
+  // ✅ FIRST: GET current data
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "X-Master-Key": API_KEY
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    let orders = data.record?.orders || [];
+    orders.push(order);
+
+    // ✅ PUT updated orders back to JSONBin
+    return fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": API_KEY
+      },
+      body: JSON.stringify({ orders: orders })
+    });
+  })
+  .then(() => {
+    alert("Order submitted! Total: $" + order.totalCost);
+    closeModal();
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Error submitting order.");
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("submitBtn").disabled = false;
+  });
+}
+</script>
+
+</body>
+</html>
