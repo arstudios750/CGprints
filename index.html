@@ -12,45 +12,75 @@
   .hero { text-align: center; padding: 60px 20px; background: linear-gradient(180deg, #1a1a1a, #000); }
   .hero h1 { font-size: 3rem; }
   .hero p { font-size: 1.2rem; max-width: 600px; margin: auto; }
+  
+  /* Products grid */
   .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 40px; }
   .product-card { background: #131313; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 0 10px rgba(255,0,0,0.2); }
   .product-card img { width: 100%; border-radius: 10px; }
   .product-card h3 { margin-top: 10px; }
   .product-card p { margin: 5px 0; font-weight: bold; }
   .product-card button { margin-top: 10px; padding: 10px 15px; border: none; border-radius: 8px; background: linear-gradient(90deg, red, blue, purple); color: #fff; cursor: pointer; }
+  
+  /* New row for two half-width boxes */
+  .new-row { display: flex; gap: 20px; margin-top: 20px; padding: 0 40px; }
+  .half-width { width: 50%; }
+
   footer { text-align: center; padding: 20px; background: #111; margin-top: 30px; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
+
 <header>CGprints</header>
 <nav>
   <a href="#products">Products</a>
   <a href="#contact">Contact</a>
 </nav>
+
 <section class="hero">
   <h1>High‑Quality 3D Prints</h1>
   <p>Your one‑stop shop for custom miniatures, props, tools, figurines, and more — printed with precision.</p>
 </section>
+
+<!-- Existing 3 products -->
 <section id="products" class="products">
-  <div class="product-card" data-price="5">
-    <img src="tank.png" alt="Tank 3 pieces" />
-    <h3>Tank 3 peices</h3>
+  <div class="product-card" data-price="4">
+    <img src="https://drive.google.com/uc?export=view&id=165iLKRYn2qgOA9GVk0mmBADNPd9bzxdh" alt="Tank 3 pieces" />
+    <h3>Tank 3 pieces</h3>
     <p>Price: $4</p>
-    <button type="button" onclick="buyItem('Tank 3 peices', 4)">Buy</button>
+    <button type="button" onclick="buyItem('Tank 3 pieces', 4)">Buy</button>
   </div>
-  <div class="product-card" data-price="7">
-    <img src="rocto.png" alt="Rocktopus" />
+  <div class="product-card" data-price="5">
+    <img src="https://drive.google.com/uc?export=view&id=1Z1bMIBY6Db8NzFwkY4x_5ZU4I7w4Rl_C" alt="Roctopus" />
     <h3>Roctopus</h3>
     <p>Price: $5</p>
     <button type="button" onclick="buyItem('Roctopus', 5)">Buy</button>
   </div>
-  <div class="product-card" data-price="10">
-    <img src="fidgetpack.png" alt="Fidget pack deluxe" />
+  <div class="product-card" data-price="20">
+    <img src="https://drive.google.com/uc?export=view&id=1sL42EhXzT6vQ_DV7IX8rnIFsPD1stvP1" alt="Fidget pack deluxe" />
     <h3>Fidget pack deluxe</h3>
     <p>Price: $20</p>
     <button type="button" onclick="buyItem('Fidget pack deluxe', 20)">Buy</button>
   </div>
 </section>
+
+<!-- New row with 2 half-width boxes -->
+<div class="new-row">
+  <div class="product-card half-width" data-price="3">
+    <img src="fidgetcone1.png" alt="Fidget cone" />
+    <h3>Fidget cone</h3>
+    <p>Price: $3</p>
+    <button type="button" onclick="buyItem('Fidget cone', 3)">Buy</button>
+  </div>
+  <div class="product-card half-width" data-price="3">
+    <img src="infinitycube.png" alt="infinity cube" />
+    <h3>infinity cube</h3>
+    <p>Price: $3</p>
+    <button type="button" onclick="buyItem('Infinity cube', 3)">Buy</button>
+  </div>
+</div>
+
 <footer id="contact"></footer>
 
 <!-- Order Form Modal -->
